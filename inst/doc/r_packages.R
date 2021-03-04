@@ -1,4 +1,4 @@
-## ----pkgchecks, echo = FALSE---------------------------------------------
+## ----pkgchecks, echo = FALSE--------------------------------------------------
 ## check if other logger packages are available and exit if not
 for (pkg in c('devtools')) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
@@ -7,13 +7,13 @@ for (pkg in c('devtools')) {
     }
 }
 
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(logger)
 devtools::load_all(system.file('demo-packages/logger-tester-package', package = 'logger'))
 logger_tester_function(INFO, 'hi from tester package')

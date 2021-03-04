@@ -13,7 +13,9 @@
 #'   \item user: name of the real user id as reported by \code{Sys.info}
 #'   \item pid: the process identification number of the R session
 #'   \item node: name by which the machine is known on the network as reported by \code{Sys.info}
+#'   \item r_version: R's major and minor version as a string
 #'   \item ns: namespace usually defaults to \code{global} or the name of the holding R package of the calling the logging function
+#'   \item ns_pkg_version: the version of \code{ns} when it's a package
 #'   \item ans: same as \code{ns} if there's a defined \code{\link{logger}} for the namespace, otherwise a fallback namespace (eg usually \code{global})
 #'   \item topenv: the name of the top environment from which the parent call was called (eg R package name or \code{GlobalEnv})
 #'   \item call: parent call (if any) calling the logging function
@@ -23,6 +25,7 @@
 #' @inheritParams log_level
 #' @return list
 #' @export
+#' @importFrom utils packageVersion
 #' @seealso \code{\link{layout_glue_generator}}
 get_logger_meta_variables <- function(log_level = NULL, namespace = NA_character_,
                                       .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
@@ -34,14 +37,18 @@ get_logger_meta_variables <- function(log_level = NULL, namespace = NA_character
         ns        = namespace,
         ans       = fallback_namespace(namespace),
         topenv    = top_env_name(.topenv),
-        fn        = deparse(.topcall[[1]]),
-        call      = deparse(.topcall),
+        fn        = deparse_to_one_line(.topcall[[1]]),
+        call      = deparse_to_one_line(.topcall),
 
         time      = Sys.time(),
         levelr    = log_level,
         level     = attr(log_level, 'level'),
 
         pid       = Sys.getpid(),
+
+        ## R and ns package versions
+        r_version   = paste0(R.Version()[c('major', 'minor')], collapse = '.'),
+        ns_pkg_version = tryCatch(as.character(packageVersion(namespace)), error = function(e) NA_character_),
 
         ## stuff from Sys.info
         node       = sysinfo[['nodename']],
@@ -79,7 +86,7 @@ get_logger_meta_variables <- function(log_level = NULL, namespace = NA_character
 #' log_info('try {runif(1)}')
 #' }
 #' @seealso See example calls from \code{\link{layout_glue}} and \code{\link{layout_glue_colors}}.
-layout_glue_generator <- function(format = '{level} [{format(time, "%Y-%d-%m %H:%M:%S")}] {msg}') {
+layout_glue_generator <- function(format = '{level} [{format(time, "%Y-%m-%d %H:%M:%S")}] {msg}') {
 
     force(format)
 
@@ -100,12 +107,24 @@ layout_glue_generator <- function(format = '{level} [{format(time, "%Y-%d-%m %H:
 }
 
 
+#' Format a log record by including the raw message without anything added or modified
+#' @inheritParams log_level
+#' @param msg string message
+#' @return character vector
+#' @export
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+layout_blank <- structure(function(level, msg, namespace = NA_character_,
+                                   .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
+    msg
+}, generator = quote(layout_blank()))
+
+
 #' Format a log record by concatenating the log level, timestamp and message
 #' @inheritParams log_level
 #' @param msg string message
 #' @return character vector
 #' @export
-#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
 layout_simple <- structure(function(level, msg, namespace = NA_character_,
                                     .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
     paste0(attr(level, 'level'), ' [', format(Sys.time(), "%Y-%m-%d %H:%M:%S"), '] ', msg)
@@ -117,7 +136,7 @@ layout_simple <- structure(function(level, msg, namespace = NA_character_,
 #' @param msg string message
 #' @return character vector
 #' @export
-#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
 #' @examples \dontrun{
 #' log_layout(layout_logging)
 #' log_info(42)
@@ -135,7 +154,7 @@ layout_logging <- structure(function(level, msg, namespace = NA_character_,
            attr(level, 'level'), ':',
            ifelse(meta$ns == 'global', '', meta$ns), ':',
            msg)
-}, generator = quote(layout_simple()))
+}, generator = quote(layout_logging()))
 
 
 #' Format a log message with \code{glue}
@@ -144,7 +163,7 @@ layout_logging <- structure(function(level, msg, namespace = NA_character_,
 #' @inheritParams layout_simple
 #' @return character vector
 #' @export
-#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
 layout_glue <- layout_glue_generator()
 
 
@@ -164,12 +183,12 @@ layout_glue <- layout_glue_generator()
 #' log_error('This is another problem')
 #' log_fatal('The last problem.')
 #' }
-#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
 #' @note This functionality depends on the \pkg{crayon} package.
 layout_glue_colors <- layout_glue_generator(
     format = paste(
         '{crayon::bold(colorize_by_log_level(level, levelr))}',
-        '[{crayon::italic(format(time, "%Y-%d-%m %H:%M:%S"))}]',
+        '[{crayon::italic(format(time, "%Y-%m-%d %H:%M:%S"))}]',
         '{grayscale_by_log_level(msg, levelr)}'))
 
 
@@ -183,7 +202,7 @@ layout_glue_colors <- layout_glue_generator(
 #' log_info('ok {1:3} + {1:3} = {2*(1:3)}')
 #' }
 #' @note This functionality depends on the \pkg{jsonlite} package.
-#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}} or generator functions such as \code{\link{layout_glue_generator}}
+#' @seealso This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json_parser}},  or generator functions such as \code{\link{layout_glue_generator}}
 layout_json <- function(fields = c('time', 'level', 'ns', 'ans', 'topenv', 'fn', 'node', 'arch', 'os_name', 'os_release', 'os_version', 'pid', 'user', 'msg')) {
 
     force(fields)
@@ -202,3 +221,68 @@ layout_json <- function(fields = c('time', 'level', 'ns', 'ans', 'topenv', 'fn',
     }, generator = deparse(match.call()))
 
 }
+
+
+#' Generate log layout function rendering JSON after merging meta fields with parsed list from JSON message
+#' @param fields character vector of field names to be included in the JSON
+#' @export
+#' @examples \dontrun{
+#' log_formatter(formatter_json)
+#' log_info(everything = 42)
+#' log_layout(layout_json_parser())
+#' log_info(everything = 42)
+#' log_layout(layout_json_parser(fields = c('time', 'node')))
+#' log_info(cars = row.names(mtcars), species = unique(iris$Species))
+#' }
+#' @note This functionality depends on the \pkg{jsonlite} package.
+#' @seealso This is a \code{\link{log_layout}} potentially to be used with \code{\link{formatter_json}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}} or generator functions such as \code{\link{layout_glue_generator}}
+layout_json_parser <- function(fields = c('time', 'level', 'ns', 'ans', 'topenv', 'fn', 'node', 'arch', 'os_name', 'os_release', 'os_version', 'pid', 'user')) {
+
+    force(fields)
+
+    structure(function(level, msg, namespace = NA_character_,
+                       .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
+
+        fail_on_missing_package('jsonlite')
+
+        meta <- get_logger_meta_variables(
+            log_level = level, namespace = namespace,
+            .logcall = .logcall, .topcall = .topcall, .topenv = .topenv)[fields]
+
+        msg <- jsonlite::fromJSON(msg)
+
+        jsonlite::toJSON(c(meta, msg), auto_unbox = TRUE, null = 'null')
+
+    }, generator = deparse(match.call()))
+
+}
+
+
+#nocov start
+#' Format a log record for syslognet
+#'
+#' Format a log record for syslognet.
+#' This function converts the logger log level to a
+#' log severity level according to RFC 5424 "The Syslog Protocol".
+#'
+#' @inheritParams layout_simple
+#' @return A character vector with a severity attribute.
+#' @export
+layout_syslognet <- structure(
+  function(level, msg, namespace = NA_character_,
+           .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
+    ret <- paste(attr(level, 'level'), msg)
+    attr(ret, 'severity') <- switch(
+        attr(level, 'level', exact = TRUE),
+        'FATAL' = 'CRITICAL',
+        'ERROR' = 'ERR',
+        'WARN' = 'WARNING',
+        'SUCCESS' = 'NOTICE',
+        'INFO' = 'INFO',
+        'DEBUG' = 'DEBUG',
+        'TRACE' = 'DEBUG')
+    return(ret)
+  },
+  generator = quote(layout_syslognet())
+)
+#nocov end

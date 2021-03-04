@@ -1,6 +1,6 @@
 #' Check if R package can be loaded and fails loudly otherwise
 #' @param pkg string
-#' @keywords internal
+#' @export
 #' @examples \dontrun{
 #' f <- function() fail_on_missing_package('foobar')
 #' f()
@@ -25,4 +25,20 @@ fail_on_missing_package <- function(pkg) {
 #' @param .topenv call environment
 top_env_name <- function(.topenv = parent.frame()) {
     environmentName(topenv(.topenv))
+}
+
+
+#' Deparse and join all lines into a single line
+#'
+#' Calling \code{deparse} and joining all the returned lines into a
+#' single line, separated by whitespace, and then cleaning up all the
+#' duplicated whitespace (except for excessive whitespace in strings
+#' between single or double quotes).
+#' @param x object to \code{deparse}
+#' @return string
+#' @export
+deparse_to_one_line <- function(x) {
+    gsub('\\s+(?=(?:[^\\\'"]*[\\\'"][^\\\'"]*[\\\'"])*[^\\\'"]*$)', ' ',
+         paste(deparse(x), collapse = ' '),
+         perl = TRUE)
 }

@@ -3,9 +3,12 @@ library(testthat)
 
 ## save current settings so that we can reset later
 threshold <- log_threshold()
-layout <- log_layout()
+appender  <- log_appender()
+layout    <- log_layout()
 
 context('loggers')
+
+log_appender(appender_stdout)
 
 log_threshold(WARN)
 test_that('log levels', {
@@ -59,6 +62,20 @@ test_that('simple glue layout with threshold', {
     expect_equal(capture.output(log_trace('foobar')), character())
 })
 
+test_that('namespaces', {
+    log_threshold(ERROR, namespace = 'custom')
+    expect_output(log_fatal('foobar', namespace = 'custom'), 'FATAL foobar')
+    expect_output(log_error('foobar', namespace = 'custom'), 'ERROR foobar')
+    expect_output(log_info('foobar', namespace = 'custom'), NA)
+    expect_output(log_debug('foobar', namespace = 'custom'), NA)
+    log_threshold(INFO, namespace = 'custom')
+    expect_output(log_info('foobar', namespace = 'custom'), 'INFO foobar')
+    expect_output(log_debug('foobar', namespace = 'custom'), NA)
+    log_threshold(TRACE, namespace = log_namespaces())
+    expect_output(log_debug('foobar', namespace = 'custom'), 'DEBUG foobar')
+    log_threshold(INFO)
+})
+
 test_that('simple glue layout with threshold directly calling log', {
     expect_equal(capture.output(log_level(FATAL, 'foobar')), 'FATAL foobar')
     expect_equal(capture.output(log_level(ERROR, 'foobar')), 'ERROR foobar')
@@ -97,3 +114,4 @@ test_that('print.level', {
 ## reset settings
 log_threshold(threshold)
 log_layout(layout)
+log_appender(appender)

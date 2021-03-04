@@ -4,9 +4,14 @@
 \alias{layout_glue_colors}
 \title{Format a log message with \code{glue} and ANSI escape codes to add colors}
 \usage{
-layout_glue_colors(level, msg, namespace = NA_character_,
-  .logcall = sys.call(), .topcall = sys.call(-1),
-  .topenv = parent.frame())
+layout_glue_colors(
+  level,
+  msg,
+  namespace = NA_character_,
+  .logcall = sys.call(),
+  .topcall = sys.call(-1),
+  .topenv = parent.frame()
+)
 }
 \arguments{
 \item{level}{log level, see \code{\link{log_levels}} for more details}
@@ -45,5 +50,5 @@ log_fatal('The last problem.')
 }
 }
 \seealso{
-This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}
+This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
 }

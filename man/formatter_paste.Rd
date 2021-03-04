@@ -4,8 +4,12 @@
 \alias{formatter_paste}
 \title{Concatenate R objects into a character vector via \code{paste}}
 \usage{
-formatter_paste(..., .logcall = sys.call(), .topcall = sys.call(-1),
-  .topenv = parent.frame())
+formatter_paste(
+  ...,
+  .logcall = sys.call(),
+  .topcall = sys.call(-1),
+  .topenv = parent.frame()
+)
 }
 \arguments{
 \item{...}{passed to \code{paste}}
@@ -23,5 +27,5 @@ character vector
 Concatenate R objects into a character vector via \code{paste}
 }
 \seealso{
-This is a \code{\link{log_formatter}}, for alternatives, see \code{\link{formatter_sprintf}}, \code{\link{formatter_glue}}, \code{\link{formatter_glue_or_sprintf}}, \code{\link{formatter_logging}}
+This is a \code{\link{log_formatter}}, for alternatives, see \code{\link{formatter_sprintf}}, \code{\link{formatter_glue}}, \code{\link{formatter_glue_or_sprintf}}, \code{\link{formatter_logging}}, \code{\link{formatter_json}}, \code{\link{formatter_pander}} and \code{\link{skip_formatter}} for marking a string not to apply the formatter on it.
 }

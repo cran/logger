@@ -4,10 +4,13 @@
 \alias{appender_slack}
 \title{Send log messages to a Slack channel}
 \usage{
-appender_slack(channel = Sys.getenv("SLACK_CHANNEL"),
+appender_slack(
+  channel = Sys.getenv("SLACK_CHANNEL"),
   username = Sys.getenv("SLACK_USERNAME"),
   icon_emoji = Sys.getenv("SLACK_ICON_EMOJI"),
-  api_token = Sys.getenv("SLACK_API_TOKEN"), preformatted = TRUE)
+  api_token = Sys.getenv("SLACK_API_TOKEN"),
+  preformatted = TRUE
+)
 }
 \arguments{
 \item{channel}{Slack channel name with a hashtag prefix for public channel and no prefix for private channels}
@@ -30,5 +33,5 @@ Send log messages to a Slack channel
 This functionality depends on the \pkg{slackr} package.
 }
 \seealso{
-This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_tee}}, \code{\link{appender_pushbullet}}
+This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_tee}}, \code{\link{appender_pushbullet}}, \code{\link{appender_telegram}}, \code{\link{appender_syslog}}, \code{\link{appender_kinesis}} and \code{\link{appender_async}} for evaluate any \code{\link{log_appender}} function in a background process.
 }

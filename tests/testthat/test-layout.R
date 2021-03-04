@@ -4,8 +4,17 @@ library(jsonlite)
 
 ## save current settings so that we can reset later
 layout <- log_layout()
+appender <- log_appender()
+
+log_appender(appender_stdout)
 
 context('layouts')
+
+log_layout(layout_blank)
+test_that('blank layout', {
+    expect_output(log_info('foobar'), 'foobar')
+    expect_equal(capture.output(log_info('foobar')), 'foobar')
+})
 
 log_layout(layout_glue_colors)
 test_that('colorized layout', {
@@ -19,6 +28,12 @@ log_layout(layout_json())
 test_that('JSON layout', {
     expect_equal(fromJSON(capture.output(log_info('foobar')))$level, 'INFO')
     expect_equal(fromJSON(capture.output(log_info('foobar')))$msg, 'foobar')
+})
+
+log_layout(layout_json_parser(fields = c()))
+test_that('JSON parser layout', {
+    expect_output(log_info(skip_formatter('{"x": 4}')), '\\{"x":4\\}')
+    expect_equal(capture.output(log_info(skip_formatter('{"x": 4}'))), '{"x":4}')
 })
 
 test_that('must throw errors', {
@@ -44,3 +59,4 @@ test_that('logging layout', {
 
 ## reset settings
 log_layout(layout)
+log_appender(appender)

@@ -30,6 +30,8 @@ oldconf <- list(
     layout = log_layout(),
     formatter = log_formatter(),
     appender = log_appender())
+## knitr not picking up stderr
+log_appender(appender_stdout)
 ```
 
 In this vignette I suppose that you are already familiar with [The Anatomy of a Log Request](https://daroczig.github.io/logger/articles/anatomy.html) vignette.
@@ -70,6 +72,16 @@ with_log_threshold({
     log_debug('pst, can you hear me?')
     log_info('yes')
 }, threshold = TRACE)
+```
+
+You can also define your own log level(s) if needed, for example introducing an extra level between `DEBUG` and `INFO`:
+
+```{r}
+FYI <- structure(450L, level = 'FYI', class = c('loglevel', 'integer'))
+log_threshold(FYI)
+log_debug('ping')
+log_level(FYI, 'ping')
+log_info('pong')
 ```
 
 ## Log namespaces
@@ -221,7 +233,7 @@ For more details on this, see the [Writing custom logger extensions](https://dar
 ## reset layout
 log_layout(layout_simple)
 ```
-    
+
 ## Delivering log records to their destination
 
 By default, `logger` will write to the console or `stdout` via the `?appender_console` function:
@@ -257,12 +269,14 @@ log_info('Excited about sending logs to Slack!')
 log_info('Hi there from logger@R!', namespace = 'slack')
 ```
 
-You may find `?appender_tee` also useful, that write the log messages to both `stdout` and a file.
+You may find `?appender_tee` also useful, that writes the log messages to both `stdout` and a file.
 
 ```{r}
 ## reset appender
 log_appender(appender_console)
 ```
+
+And the are many other appender functions bundled with `logger` as well, eg some writing to Syslog, Telegram, Pushbullet, a database table or an Amazon Kinesis stream -- even doing that asynchronously via `appender_async` -- see [Simple Benchmarks on Performance](https://daroczig.github.io/logger/articles/performance.html) for more details.
 
 ## Stacking loggers
 

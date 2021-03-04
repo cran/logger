@@ -4,10 +4,12 @@
 \alias{appender_tee}
 \title{Append log messages to a file and stdout as well}
 \usage{
-appender_tee(file)
+appender_tee(file, append = TRUE)
 }
 \arguments{
 \item{file}{path}
+
+\item{append}{boolean passed to \code{cat} defining if the file should be overwritten with the most recent log message instead of appending}
 }
 \value{
 function taking \code{lines} argument
@@ -16,5 +18,5 @@ function taking \code{lines} argument
 Append log messages to a file and stdout as well
 }
 \seealso{
-This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_slack}}, \code{\link{appender_pushbullet}}
+This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_slack}}, \code{\link{appender_pushbullet}}, \code{\link{appender_telegram}}, \code{\link{appender_syslog}}, \code{\link{appender_kinesis}} and \code{\link{appender_async}} for evaluate any \code{\link{log_appender}} function in a background process.
 }

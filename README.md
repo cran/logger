@@ -1,13 +1,18 @@
 # logger
 
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
- ![CRAN](https://www.r-pkg.org/badges/version/logger) [![Build Status](https://travis-ci.org/daroczig/logger.svg?branch=master)](https://travis-ci.org/daroczig/logger) [![Code Coverage](https://codecov.io/gh/daroczig/logger/branch/master/graph/badge.svg)](https://codecov.io/gh/daroczig/logger)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![CRAN](https://www.r-pkg.org/badges/version/logger)](https://cran.r-project.org/package=logger) [![Build Status](https://travis-ci.org/daroczig/logger.svg?branch=master)](https://travis-ci.org/daroczig/logger) [![Code Coverage](https://codecov.io/gh/daroczig/logger/branch/master/graph/badge.svg)](https://codecov.io/gh/daroczig/logger) [![A Mikata Project](https://mikata.dev/img/badge.svg)](https://mikata.dev)
 
 A lightweight, modern and flexibly logging utility for R -- heavily inspired by the `futile.logger` R package and `logging` Python module.
 
 ## Installation
 
-`logger` is not on CRAN yet, please install from GitHub:
+[![CRAN version](http://www.r-pkg.org/badges/version-ago/logger)](https://cran.r-project.org/package=logger)
+
+```r
+install.packages('logger')
+```
+
+The most recent, development version of `logger` can also be installed from GitHub:
 
 ```r
 remotes::install_github('daroczig/logger')
@@ -82,7 +87,7 @@ Although there are multiple pretty good options already hosted on CRAN when it c
 - [`rsyslog`](https://cran.r-project.org/package=rsyslog): logging to `syslog` on 'POSIX'-compatible operating systems
 - [`lumberjack`](https://cran.r-project.org/package=lumberjack): provides a special operator to log changes in data
 
-Also many more work-in-progress R packages hosted on eg GitHub, such as 
+Also many more work-in-progress R packages hosted on eg GitHub, such as
 
 - https://github.com/smbache/loggr
 - https://github.com/nfultz/tron

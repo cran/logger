@@ -1,8 +1,10 @@
 library(logger)
 library(testthat)
+library(jsonlite)
 
 ## save current settings so that we can reset later
-formatter  <- log_formatter()
+formatter <- log_formatter()
+appender  <- log_appender()
 
 context('formatters')
 everything <- 42
@@ -14,6 +16,7 @@ f <- function() {
 }
 
 log_formatter(formatter_glue)
+log_appender(appender_stdout)
 test_that('glue works', {
 
     expect_equal(formatter_glue("Hi"), "Hi")
@@ -32,6 +35,9 @@ test_that('glue works', {
     expect_output(log_info("Hi {everything}"), '42')
     expect_output(log_warn("Hi {everything}"), '42')
     expect_output(g(), '42')
+
+    expect_error(formatter_glue('malformed {'))
+    expect_error(formatter_glue('malformed {{'), NA)
 
 })
 
@@ -91,6 +97,21 @@ test_that('formatter_logging works', {
 
 })
 
+test_that('special chars in the text work', {
+  expect_equal(formatter_glue('JSON: {toJSON(1:4)}'), 'JSON: [1,2,3,4]')
+  expect_equal(formatter_glue('JSON: {toJSON(iris[1:2, ], auto_unbox = TRUE)}'), 'JSON: [{"Sepal.Length":5.1,"Sepal.Width":3.5,"Petal.Length":1.4,"Petal.Width":0.2,"Species":"setosa"},{"Sepal.Length":4.9,"Sepal.Width":3,"Petal.Length":1.4,"Petal.Width":0.2,"Species":"setosa"}]') # nolint
+  expect_output(log_info('JSON: {toJSON(1:4)}'), '[1,2,3,4]')
+  expect_output(log_info('JSON: {toJSON(iris[1:2, ], auto_unbox = TRUE)}'), '[{"Sepal.Length":5.1,"Sepal.Width":3.5,"Petal.Length":1.4,"Petal.Width":0.2,"Species":"setosa"},{"Sepal.Length":4.9,"Sepal.Width":3,"Petal.Length":1.4,"Petal.Width":0.2,"Species":"setosa"}]') # nolint
+})
+
+log_formatter(formatter_pander)
+test_that('pander formatter', {
+    expect_output(log_info(42), '_42_')
+    expect_output(log_info('42'), '42')
+    expect_output(log_info(head(iris)), 'Sepal.Length')
+    expect_output(log_info(lm(hp ~ wt, mtcars)), 'Fitting linear model')
+})
+
 ## cleanup
 rm(everything)
 rm(f)
@@ -107,4 +128,11 @@ test_that('skip formatter', {
     expect_error(log_info(skip_formatter('hi {x}', x = 4)))
 })
 
+log_formatter(formatter_json)
+test_that('skip formatter', {
+    expect_output(log_info(skip_formatter('hi {pi}')), 'hi \\{pi\\}')
+    expect_output(log_info(x = 1), '\\{"x":1\\}')
+})
+
 log_formatter(formatter)
+log_appender(appender)
