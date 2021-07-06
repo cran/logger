@@ -209,16 +209,16 @@ div#tocnav ul.nav li ul {
 <div class="comparison">
 <p><package>futile.logger</package></p>
 <pre class="r"><code>flog.info(&#39;hi there&#39;)
-#&gt; INFO [2021-03-03 23:36:34] hi there
+#&gt; INFO [2021-07-06 12:38:30] hi there
 flog.warn(&#39;watch out&#39;)
-#&gt; WARN [2021-03-03 23:36:34] watch out</code></pre>
+#&gt; WARN [2021-07-06 12:38:30] watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
 <pre class="r"><code>log_info(&#39;hi there&#39;)
-#&gt; INFO [2021-03-03 23:36:34] hi there
+#&gt; INFO [2021-07-06 12:38:30] hi there
 log_warn(&#39;watch out&#39;)
-#&gt; WARN [2021-03-03 23:36:34] watch out</code></pre>
+#&gt; WARN [2021-07-06 12:38:30] watch out</code></pre>
 </div>
 <p>As you can see above, the default layout of the messages is exactly the same.</p>
 </div>
@@ -234,14 +234,14 @@ log_warn(&#39;watch out&#39;)
 <pre class="r"><code>flog.layout(layout.json)
 #&gt; NULL
 flog.info(&#39;hi again&#39;)
-#&gt; {&quot;level&quot;:&quot;INFO&quot;,&quot;timestamp&quot;:&quot;2021-03-03 23:36:34 +0100&quot;,&quot;message&quot;:&quot;hi again&quot;,&quot;func&quot;:&quot;tools::buildVignettes&quot;}</code></pre>
+#&gt; {&quot;level&quot;:&quot;INFO&quot;,&quot;timestamp&quot;:&quot;2021-07-06 12:38:30 +0200&quot;,&quot;message&quot;:&quot;hi again&quot;,&quot;func&quot;:&quot;tools::buildVignettes&quot;}</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
 <pre class="r"><code>log_layout(layout_json())
 
 log_info(&#39;hi again&#39;)
-#&gt; {&quot;time&quot;:&quot;2021-03-03 23:36:34&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;ns&quot;:&quot;global&quot;,&quot;ans&quot;:&quot;global&quot;,&quot;topenv&quot;:&quot;R_GlobalEnv&quot;,&quot;fn&quot;:&quot;eval&quot;,&quot;node&quot;:&quot;nevermind&quot;,&quot;arch&quot;:&quot;x86_64&quot;,&quot;os_name&quot;:&quot;Linux&quot;,&quot;os_release&quot;:&quot;5.10.16-arch1-1&quot;,&quot;os_version&quot;:&quot;#1 SMP PREEMPT Sat, 13 Feb 2021 20:50:18 +0000&quot;,&quot;pid&quot;:1612699,&quot;user&quot;:&quot;daroczig&quot;,&quot;msg&quot;:&quot;hi again&quot;}</code></pre>
+#&gt; {&quot;time&quot;:&quot;2021-07-06 12:38:30&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;ns&quot;:&quot;global&quot;,&quot;ans&quot;:&quot;global&quot;,&quot;topenv&quot;:&quot;R_GlobalEnv&quot;,&quot;fn&quot;:&quot;eval&quot;,&quot;node&quot;:&quot;nevermind&quot;,&quot;arch&quot;:&quot;x86_64&quot;,&quot;os_name&quot;:&quot;Linux&quot;,&quot;os_release&quot;:&quot;5.10.16-arch1-1&quot;,&quot;os_version&quot;:&quot;#1 SMP PREEMPT Sat, 13 Feb 2021 20:50:18 +0000&quot;,&quot;pid&quot;:1984635,&quot;user&quot;:&quot;daroczig&quot;,&quot;msg&quot;:&quot;hi again&quot;}</code></pre>
 </div>
 <p>As you can see, <code>logger</code> provided a bit more information about the log request compared to <code>futile.logger</code>, but it’s easy to change the list of fields to be used in the JSON – see <code>?get_logger_meta_variables</code> for a complete list of variable names to be passed to <code>?layout_json</code>. <code>logger</code> also ships a lot more layouts, eg <code>?layout_glue_colors</code> or roll out your own via the <code>?layout_glue_generator</code> factory function.</p>
 </div>
@@ -251,26 +251,26 @@ log_info(&#39;hi again&#39;)
 <div class="comparison">
 <p><package>futile.logger</package></p>
 <pre class="r"><code>flog.info(&#39;hi&#39;)
-#&gt; INFO [2021-03-03 23:36:34] hi
+#&gt; INFO [2021-07-06 12:38:30] hi
 flog.info(&#39;hi %s&#39;, 84/2)
-#&gt; INFO [2021-03-03 23:36:34] hi 42
+#&gt; INFO [2021-07-06 12:38:30] hi 42
 flog.info(paste(&#39;hi&#39;, 84/2))
-#&gt; INFO [2021-03-03 23:36:34] hi 42
+#&gt; INFO [2021-07-06 12:38:30] hi 42
 flog.info(glue::glue(&#39;hi {84/2}&#39;))
-#&gt; INFO [2021-03-03 23:36:34] hi 42</code></pre>
+#&gt; INFO [2021-07-06 12:38:30] hi 42</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
 <pre class="r"><code>log_info(&#39;hi&#39;)
-#&gt; INFO [2021-03-03 23:36:34] hi
+#&gt; INFO [2021-07-06 12:38:30] hi
 log_info(&#39;hi {84/2}&#39;)
-#&gt; INFO [2021-03-03 23:36:34] hi 42
+#&gt; INFO [2021-07-06 12:38:30] hi 42
 log_formatter(formatter_sprintf)
 log_info(&#39;hi %s&#39;, 84/2)
-#&gt; INFO [2021-03-03 23:36:34] hi 42
+#&gt; INFO [2021-07-06 12:38:30] hi 42
 log_formatter(formatter_paste)
 log_info(&#39;hi&#39;, 84/2)
-#&gt; INFO [2021-03-03 23:36:34] hi 42</code></pre>
+#&gt; INFO [2021-07-06 12:38:30] hi 42</code></pre>
 </div>
 <p>It’s easy to change this default formatter in both packages: use <code>flog.layout</code> handles this as well in <code>futile.logger</code>, while the formatter is separated from the layout function in <code>logger</code>, so check <code>?log_formatter</code> instead. <code>logger</code> ships with a bit more formatter functions, eg the default <code>?formatter_glue</code> and <code>?formatter_glue_or_sprintf</code> that tries to combine the best from both words.</p>
 </div>
@@ -337,9 +337,9 @@ basicConfig()</code></pre>
 <div class="comparison">
 <p><package>logging</package></p>
 <pre class="r"><code>loginfo(&#39;hi there&#39;)
-#&gt; 2021-03-03 23:36:34 INFO::hi there
+#&gt; 2021-07-06 12:38:30 INFO::hi there
 logwarn(&#39;watch out&#39;)
-#&gt; 2021-03-03 23:36:34 WARNING::watch out</code></pre>
+#&gt; 2021-07-06 12:38:30 WARNING::watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
@@ -397,7 +397,7 @@ str(levels[order(-as.numeric(levels))], give.attr = FALSE)
 #&gt;         msg, sep = &quot;:&quot;))
 #&gt;     return(text)
 #&gt; }
-#&gt; &lt;bytecode: 0x564035edd7b0&gt;
+#&gt; &lt;bytecode: 0x55c97da7fe80&gt;
 #&gt; &lt;environment: namespace:logging&gt;</code></pre>
 </div>
 <div class="comparison">
@@ -413,13 +413,13 @@ str(levels[order(-as.numeric(levels))], give.attr = FALSE)
 <div class="comparison">
 <p><package>logging</package></p>
 <pre class="r"><code>loginfo(&#39;hi&#39;)
-#&gt; 2021-03-03 23:36:34 INFO::hi
+#&gt; 2021-07-06 12:38:30 INFO::hi
 loginfo(&#39;hi %s&#39;, 84/2)
-#&gt; 2021-03-03 23:36:34 INFO::hi 42
+#&gt; 2021-07-06 12:38:30 INFO::hi 42
 loginfo(paste(&#39;hi&#39;, 84/2))
-#&gt; 2021-03-03 23:36:34 INFO::hi 42
+#&gt; 2021-07-06 12:38:30 INFO::hi 42
 loginfo(glue::glue(&#39;hi {84/2}&#39;))
-#&gt; 2021-03-03 23:36:34 INFO::hi 42</code></pre>
+#&gt; 2021-07-06 12:38:30 INFO::hi 42</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
@@ -513,9 +513,9 @@ logger &lt;- create.logger(logfile = stdout(), level = &quot;INFO&quot;)</code><
 <div class="comparison">
 <p><package>log4r</package></p>
 <pre class="r"><code>info(logger, &#39;hi there&#39;)
-#&gt; INFO  [2021-03-03 23:36:34] hi there
+#&gt; INFO  [2021-07-06 12:38:30] hi there
 warn(logger, &#39;watch out&#39;)
-#&gt; WARN  [2021-03-03 23:36:34] watch out</code></pre>
+#&gt; WARN  [2021-07-06 12:38:30] watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
