@@ -1,3 +1,9 @@
+#' Dummy appender not delivering the log record to anywhere
+#' @param lines character vector
+#' @export
+appender_void <- structure(function(lines) {}, generator = quote(appender_void()))
+
+
 #' Append log record to stderr
 #' @param lines character vector
 #' @export
@@ -145,6 +151,7 @@ appender_file <- function(file, append = TRUE, max_lines = Inf, max_bytes = Inf,
 #' @return function taking \code{lines} argument
 #' @seealso This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_slack}}, \code{\link{appender_pushbullet}}, \code{\link{appender_telegram}}, \code{\link{appender_syslog}}, \code{\link{appender_kinesis}} and \code{\link{appender_async}} for evaluate any \code{\link{log_appender}} function in a background process.
 appender_tee <- function(file, append = TRUE, max_lines = Inf, max_bytes = Inf, max_files = 1L) {
+    force(file)
     force(append)
     force(max_lines)
     force(max_bytes)

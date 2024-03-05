@@ -31,16 +31,16 @@ get_logger_meta_variables <- function(log_level = NULL, namespace = NA_character
                                       .logcall = sys.call(), .topcall = sys.call(-1), .topenv = parent.frame()) {
 
     sysinfo <- Sys.info()
+    timestamp <- Sys.time()
 
     list(
-
         ns        = namespace,
         ans       = fallback_namespace(namespace),
         topenv    = top_env_name(.topenv),
         fn        = deparse_to_one_line(.topcall[[1]]),
         call      = deparse_to_one_line(.topcall),
 
-        time      = Sys.time(),
+        time      = timestamp,
         levelr    = log_level,
         level     = attr(log_level, 'level'),
 
@@ -61,7 +61,6 @@ get_logger_meta_variables <- function(log_level = NULL, namespace = NA_character
 
         ## TODO jenkins (or any) env vars => no need to get here, users can write custom layouts
         ## TODO seed
-
     )
 
 }
@@ -98,8 +97,9 @@ layout_glue_generator <- function(format = '{level} [{format(time, "%Y-%m-%d %H:
             stop('Invalid log level, see ?log_levels')
         }
 
-        with(get_logger_meta_variables(log_level = level, namespace = namespace,
-                                       .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
+        with(get_logger_meta_variables(
+            log_level = level, namespace = namespace,
+            .logcall = .logcall, .topcall = .topcall, .topenv = .topenv),
              glue::glue(format))
 
     }, generator = deparse(match.call()))

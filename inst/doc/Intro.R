@@ -46,6 +46,20 @@ x <- 1:31
 log_eval(y <- f(g(x)), level = INFO)
 str(y)
 
+## ----knitr-pander-setup, include = FALSE--------------------------------------
+ppo1 <- pander::panderOptions('knitr.auto.asis')
+ppo2 <- pander::panderOptions('table.style')
+pander::panderOptions('knitr.auto.asis', FALSE)
+pander::panderOptions('table.style', 'simple')
+
+## -----------------------------------------------------------------------------
+log_formatter(formatter_pander)
+log_info(head(iris))
+
+## ----knitr-pander-revert, include = FALSE-------------------------------------
+pander::panderOptions('knitr.auto.asis', ppo1)
+pander::panderOptions('table.style', ppo2)
+
 ## ----cleanup, include = FALSE-------------------------------------------------
 ## restore settings
 log_threshold(oldconf$threshold)

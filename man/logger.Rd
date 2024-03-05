@@ -16,7 +16,7 @@ logger(threshold, formatter, layout, appender)
 \item{appender}{function writing the log record}
 }
 \value{
-function taking \code{level} and \code{msg} arguments
+A function taking the log \code{level} to compare with the set threshold, all the \code{...} arguments passed to the formatter function, besides the standard \code{namespace}, \code{.logcall}, \code{.topcall} and \code{.topenv} arguments (see \code{\link{log_level}} for more details). The function invisibly returns a list including the original \code{level}, \code{namespace}, all \code{...} transformed to a list as \code{params}, the log \code{message} (after calling the \code{formatter} function) and the log \code{record} (after calling the \code{layout} function), and a list of \code{handlers} with the \code{formatter}, \code{layout} and \code{appender} functions.
 }
 \description{
 A logger consists of a log level \code{threshold}, a log message \code{formatter} function, a log record \code{layout} formatting function and the \code{appender} function deciding on the destination of the log record. For more details, see the package \code{README.md}.
@@ -25,7 +25,7 @@ A logger consists of a log level \code{threshold}, a log message \code{formatter
 By default, a general logger definition is created when loading the \code{logger} package, that uses
 
 \enumerate{
-  \item \code{\link{INFO}} as the log level threshold
+  \item \code{\link{INFO}} (or as per the \code{LOGGER_LOG_LEVEL} environment variable override) as the log level threshold
   \item \code{\link{layout_simple}} as the layout function showing the log level, timestamp and log message
   \item \code{\link{formatter_glue}} (or \code{\link{formatter_sprintf}} if \pkg{glue} is not installed) as the default formatter function transforming the R objects to be logged to a character vector
   \item \code{\link{appender_console}} as the default log record destination

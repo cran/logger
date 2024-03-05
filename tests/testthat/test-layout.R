@@ -24,6 +24,15 @@ test_that('colorized layout', {
     expect_output(log_error('foobar'), 'foobar')
 })
 
+test_that('metavars', {
+    log_layout(layout_glue_generator(format = '{level} {ans} {fn} {msg}'))
+    expect_output((function(){log_info(42)})(), 'INFO')
+    expect_output((function(){log_warn(42)})(), 'WARN')
+    expect_output((function(){log_info(42)})(), 'log_info')
+    log_layout(layout_glue_generator(format = '{fn}'))
+    expect_output({fun42<-function(){log_info(42)};fun42();rm(fun42)}, 'fun42')
+})
+
 log_layout(layout_json())
 test_that('JSON layout', {
     expect_equal(fromJSON(capture.output(log_info('foobar')))$level, 'INFO')
@@ -51,6 +60,7 @@ test_that('must throw errors', {
 
 log_layout(layout_logging)
 test_that('logging layout', {
+    expect_output(log_level(INFO, 'foo', namespace = 'bar'), 'INFO:bar:foo')
     expect_output(log_info('foobar'), 'INFO')
     expect_output(log_info('foo', namespace = 'bar'), 'foo')
     expect_output(log_info('foo', namespace = 'bar'), 'bar')

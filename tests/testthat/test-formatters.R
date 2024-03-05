@@ -36,8 +36,33 @@ test_that('glue works', {
     expect_output(log_warn("Hi {everything}"), '42')
     expect_output(g(), '42')
 
+    log_appender(appender_void)
     expect_error(formatter_glue('malformed {'))
     expect_error(formatter_glue('malformed {{'), NA)
+
+    ## disabled for https://github.com/atalv/azlogr/issues/35
+    ## expect_warning(formatter_glue(NULL))
+    ## expect_warning(log_info(NULL))
+    ## expect_warning(log_info(a = 42, b = "foobar"))
+    log_appender(appender_stdout)
+
+})
+
+log_formatter(formatter_glue_safe)
+test_that('glue_safe works', {
+
+    expect_equal(formatter_glue_safe("Hi"), "Hi")
+    expect_equal(formatter_glue_safe("   Hi"), "   Hi")
+    expect_equal(formatter_glue_safe("Hi {a}", a = 42), "Hi 42")
+    expect_equal(formatter_glue_safe("Hi {everything}"), "Hi 42")
+
+    expect_output(log_info("Hi {everything}"), '42')
+    expect_output(log_warn("Hi {everything}"), '42')
+    expect_output(g(), '42')
+
+    expect_error(formatter_glue_safe("Hi {42}"))
+    expect_error(formatter_glue_safe('malformed {'))
+    expect_error(formatter_glue_safe('malformed {{'), NA)
 
 })
 
@@ -78,6 +103,14 @@ test_that('glue+sprintf works', {
     expect_equal(formatter_glue_or_sprintf('%s and %i'), '%s and %i')
     expect_equal(formatter_glue_or_sprintf('%s and %i', 1), '%s and %i')
     expect_equal(formatter_glue_or_sprintf('fun{fun}'), 'fun{fun}')
+
+    for (fn in c(formatter_sprintf, formatter_glue_or_sprintf)) {
+        log_formatter(fn)
+        log_appender(appender_void)
+        expect_error(log_info(character(0)), NA)
+        log_appender(appender_stdout)
+        expect_output(log_info(character(0)), 'INFO')
+    }
 
 })
 
