@@ -7,7 +7,7 @@
 log_threshold(level = NULL, namespace = "global", index = 1)
 }
 \arguments{
-\item{level}{see \code{\link{log_levels}}}
+\item{level}{see \code{\link[=log_levels]{log_levels()}}}
 
 \item{namespace}{logger namespace}
 
@@ -20,7 +20,7 @@ currently set log level threshold
 Get or set log level threshold
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 ## check the currently set log level threshold
 log_threshold()
 
@@ -35,9 +35,13 @@ log_info(1)
 log_warn(2)
 
 ## set the log level threshold in all namespaces to ERROR
-log_threshold(ERROR, namespace =  log_namespaces())
-}
+log_threshold(ERROR, namespace = log_namespaces())
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-\code{\link{logger}}, \code{\link{log_layout}}, \code{\link{log_formatter}}, \code{\link{log_appender}}
+Other log configutation functions: 
+\code{\link{log_appender}()},
+\code{\link{log_formatter}()},
+\code{\link{log_layout}()}
 }
+\concept{log configutation functions}

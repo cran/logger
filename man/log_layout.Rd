@@ -7,7 +7,10 @@
 log_layout(layout = NULL, namespace = "global", index = 1)
 }
 \arguments{
-\item{layout}{function defining the structure of a log record, eg \code{\link{layout_simple}}, \code{\link{layout_glue}} or \code{\link{layout_glue_colors}}, \code{\link{layout_json}}, or generator functions such as \code{\link{layout_glue_generator}}, default NULL}
+\item{layout}{function defining the structure of a log record, eg
+\code{\link[=layout_simple]{layout_simple()}}, \code{\link[=layout_glue]{layout_glue()}} or \code{\link[=layout_glue_colors]{layout_glue_colors()}},
+\code{\link[=layout_json]{layout_json()}}, or generator functions such as
+\code{\link[=layout_glue_generator]{layout_glue_generator()}}, default NULL}
 
 \item{namespace}{logger namespace}
 
@@ -17,11 +20,15 @@ log_layout(layout = NULL, namespace = "global", index = 1)
 Get or set log record layout
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_layout(layout_json())
 log_info(42)
-}
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-\code{\link{logger}}, \code{\link{log_threshold}}, \code{\link{log_appender}} and \code{\link{log_formatter}}
+Other log configutation functions: 
+\code{\link{log_appender}()},
+\code{\link{log_formatter}()},
+\code{\link{log_threshold}()}
 }
+\concept{log configutation functions}

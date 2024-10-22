@@ -14,7 +14,7 @@ with_log_threshold(
 \arguments{
 \item{expression}{R command}
 
-\item{threshold}{\code{\link{log_levels}}}
+\item{threshold}{\code{\link[=log_levels]{log_levels()}}}
 
 \item{namespace}{logger namespace}
 
@@ -24,17 +24,20 @@ with_log_threshold(
 Evaluate R expression with a temporarily updated log level threshold
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_threshold(TRACE)
-log_trace('Logging everything!')
-x <- with_log_threshold({
-  log_info('Now we are temporarily suppressing eg INFO messages')
-  log_warn('WARN')
-  log_debug('Debug messages are suppressed as well')
-  log_error('ERROR')
-  invisible(42)
-}, threshold = WARN)
+log_trace("Logging everything!")
+x <- with_log_threshold(
+  {
+    log_info("Now we are temporarily suppressing eg INFO messages")
+    log_warn("WARN")
+    log_debug("Debug messages are suppressed as well")
+    log_error("ERROR")
+    invisible(42)
+  },
+  threshold = WARN
+)
 x
-log_trace('DONE')
-}
+log_trace("DONE")
+\dontshow{logger:::namespaces_set(old)}
 }

@@ -415,17 +415,17 @@ expressions, and <code>futile.logger</code> prefixes function names by
 that:</p>
 <div class="comparison">
 <p><package>futile.logger</package></p>
-<pre class="r"><code>flog.info(&#39;hi there&#39;)
-#&gt; INFO [2024-03-05 15:10:46] hi there
-flog.warn(&#39;watch out&#39;)
-#&gt; WARN [2024-03-05 15:10:46] watch out</code></pre>
+<pre class="r"><code>flog.info(&quot;hi there&quot;)
+#&gt; INFO [2024-10-21 00:07:18] hi there
+flog.warn(&quot;watch out&quot;)
+#&gt; WARN [2024-10-21 00:07:18] watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>log_info(&#39;hi there&#39;)
-#&gt; INFO [2024-03-05 15:10:46] hi there
-log_warn(&#39;watch out&#39;)
-#&gt; WARN [2024-03-05 15:10:46] watch out</code></pre>
+<pre class="r"><code>log_info(&quot;hi there&quot;)
+#&gt; INFO [2024-10-21 00:07:18] hi there
+log_warn(&quot;watch out&quot;)
+#&gt; WARN [2024-10-21 00:07:18] watch out</code></pre>
 </div>
 <p>As you can see above, the default layout of the messages is exactly
 the same.</p>
@@ -447,15 +447,15 @@ function:</p>
 <p><package>futile.logger</package></p>
 <pre class="r"><code>flog.layout(layout.json)
 #&gt; NULL
-flog.info(&#39;hi again&#39;)
-#&gt; {&quot;level&quot;:&quot;INFO&quot;,&quot;timestamp&quot;:&quot;2024-03-05 15:10:46 +0100&quot;,&quot;message&quot;:&quot;hi again&quot;,&quot;func&quot;:&quot;tools::buildVignettes&quot;}</code></pre>
+flog.info(&quot;hi again&quot;)
+#&gt; {&quot;level&quot;:&quot;INFO&quot;,&quot;timestamp&quot;:&quot;2024-10-21 00:07:18 +0200&quot;,&quot;message&quot;:&quot;hi again&quot;,&quot;func&quot;:&quot;tools::buildVignettes&quot;}</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
 <pre class="r"><code>log_layout(layout_json())
 
-log_info(&#39;hi again&#39;)
-#&gt; {&quot;time&quot;:&quot;2024-03-05 15:10:46&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;ns&quot;:&quot;global&quot;,&quot;ans&quot;:&quot;global&quot;,&quot;topenv&quot;:&quot;R_GlobalEnv&quot;,&quot;fn&quot;:&quot;eval&quot;,&quot;node&quot;:&quot;nevermind&quot;,&quot;arch&quot;:&quot;x86_64&quot;,&quot;os_name&quot;:&quot;Linux&quot;,&quot;os_release&quot;:&quot;6.7.6-arch1-1&quot;,&quot;os_version&quot;:&quot;#1 SMP PREEMPT_DYNAMIC Fri, 23 Feb 2024 16:31:48 +0000&quot;,&quot;pid&quot;:157305,&quot;user&quot;:&quot;daroczig&quot;,&quot;msg&quot;:&quot;hi again&quot;}</code></pre>
+log_info(&quot;hi again&quot;)
+#&gt; {&quot;time&quot;:&quot;2024-10-21 00:07:18&quot;,&quot;level&quot;:&quot;INFO&quot;,&quot;ns&quot;:&quot;global&quot;,&quot;ans&quot;:&quot;global&quot;,&quot;topenv&quot;:&quot;R_GlobalEnv&quot;,&quot;fn&quot;:&quot;eval&quot;,&quot;node&quot;:&quot;nevermind&quot;,&quot;arch&quot;:&quot;x86_64&quot;,&quot;os_name&quot;:&quot;Linux&quot;,&quot;os_release&quot;:&quot;6.9.6-arch1-1&quot;,&quot;os_version&quot;:&quot;#1 SMP PREEMPT_DYNAMIC Fri, 21 Jun 2024 19:49:19 +0000&quot;,&quot;pid&quot;:2486861,&quot;user&quot;:&quot;daroczig&quot;,&quot;msg&quot;:&quot;hi again&quot;}</code></pre>
 </div>
 <p>As you can see, <code>logger</code> provided a bit more information
 about the log request compared to <code>futile.logger</code>, but it’s
@@ -473,27 +473,27 @@ formatter, while <code>logger</code> passes the objects to be logged to
 <code>glue</code>:</p>
 <div class="comparison">
 <p><package>futile.logger</package></p>
-<pre class="r"><code>flog.info(&#39;hi&#39;)
-#&gt; INFO [2024-03-05 15:10:46] hi
-flog.info(&#39;hi %s&#39;, 84/2)
-#&gt; INFO [2024-03-05 15:10:46] hi 42
-flog.info(paste(&#39;hi&#39;, 84/2))
-#&gt; INFO [2024-03-05 15:10:46] hi 42
-flog.info(glue::glue(&#39;hi {84/2}&#39;))
-#&gt; INFO [2024-03-05 15:10:46] hi 42</code></pre>
+<pre class="r"><code>flog.info(&quot;hi&quot;)
+#&gt; INFO [2024-10-21 00:07:18] hi
+flog.info(&quot;hi %s&quot;, 84 / 2)
+#&gt; INFO [2024-10-21 00:07:18] hi 42
+flog.info(paste(&quot;hi&quot;, 84 / 2))
+#&gt; INFO [2024-10-21 00:07:18] hi 42
+flog.info(glue::glue(&quot;hi {84/2}&quot;))
+#&gt; INFO [2024-10-21 00:07:18] hi 42</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>log_info(&#39;hi&#39;)
-#&gt; INFO [2024-03-05 15:10:46] hi
-log_info(&#39;hi {84/2}&#39;)
-#&gt; INFO [2024-03-05 15:10:46] hi 42
+<pre class="r"><code>log_info(&quot;hi&quot;)
+#&gt; INFO [2024-10-21 00:07:18] hi
+log_info(&quot;hi {84/2}&quot;)
+#&gt; INFO [2024-10-21 00:07:18] hi 42
 log_formatter(formatter_sprintf)
-log_info(&#39;hi %s&#39;, 84/2)
-#&gt; INFO [2024-03-05 15:10:46] hi 42
+log_info(&quot;hi %s&quot;, 84 / 2)
+#&gt; INFO [2024-10-21 00:07:18] hi 42
 log_formatter(formatter_paste)
-log_info(&#39;hi&#39;, 84/2)
-#&gt; INFO [2024-03-05 15:10:46] hi 42</code></pre>
+log_info(&quot;hi&quot;, 84 / 2)
+#&gt; INFO [2024-10-21 00:07:18] hi 42</code></pre>
 </div>
 <p>It’s easy to change this default formatter in both packages: use
 <code>flog.layout</code> handles this as well in
@@ -548,8 +548,10 @@ flog.info &lt;- log_info
 flog.warn &lt;- log_warn
 flog.error &lt;- log_error
 
-flog.info(&#39;Hello from logger in a futile.logger theme ...&#39;)
-flog.warn(&#39;... where the default log message formatter is %s&#39;, &#39;sprintf&#39;)</code></pre>
+flog.info(&quot;Hello from logger in a futile.logger theme ...&quot;)
+#&gt; INFO [2024-10-21 00:07:19] Hello from logger in a futile.logger theme ...
+flog.warn(&quot;... where the default log message formatter is %s&quot;, &quot;sprintf&quot;)
+#&gt; WARN [2024-10-21 00:07:19] ... where the default log message formatter is sprintf</code></pre>
 </div>
 </div>
 <div id="logging" class="section level2">
@@ -589,15 +591,17 @@ lowercase without any separator, such as <code>loginfo</code> or
 </ul>
 <div class="comparison">
 <p><package>logging</package></p>
-<pre class="r"><code>loginfo(&#39;hi there&#39;)
-#&gt; 2024-03-05 15:10:46.327209 INFO::hi there
-logwarn(&#39;watch out&#39;)
-#&gt; 2024-03-05 15:10:46.338784 WARNING::watch out</code></pre>
+<pre class="r"><code>loginfo(&quot;hi there&quot;)
+#&gt; 2024-10-21 00:07:19.260898 INFO::hi there
+logwarn(&quot;watch out&quot;)
+#&gt; 2024-10-21 00:07:19.275246 WARNING::watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>log_info(&#39;hi there&#39;)
-log_warn(&#39;watch out&#39;)</code></pre>
+<pre class="r"><code>log_info(&quot;hi there&quot;)
+#&gt; INFO [2024-10-21 00:07:19] hi there
+log_warn(&quot;watch out&quot;)
+#&gt; WARN [2024-10-21 00:07:19] watch out</code></pre>
 </div>
 <p>As you can see above, the default layout of the log messages is
 somewhat different:</p>
@@ -632,11 +636,17 @@ timestamp between brackets and then the message</li>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>levels &lt;- mget(ls(
-    envir = environment(logger), pattern = &#39;^[A-Z]&#39;),
-    envir = environment(logger))
-str(levels[order(-as.numeric(levels))], give.attr = FALSE)
-#&gt;  Named list()</code></pre>
+<pre class="r"><code>levels &lt;- mget(rev(logger:::log_levels_supported), envir = asNamespace(&quot;logger&quot;))
+str(levels, give.attr = FALSE)
+#&gt; List of 8
+#&gt;  $ TRACE  : &#39;loglevel&#39; int 600
+#&gt;  $ DEBUG  : &#39;loglevel&#39; int 500
+#&gt;  $ INFO   : &#39;loglevel&#39; int 400
+#&gt;  $ SUCCESS: &#39;loglevel&#39; int 350
+#&gt;  $ WARN   : &#39;loglevel&#39; int 300
+#&gt;  $ ERROR  : &#39;loglevel&#39; int 200
+#&gt;  $ FATAL  : &#39;loglevel&#39; int 100
+#&gt;  $ OFF    : &#39;loglevel&#39; int 0</code></pre>
 </div>
 </div>
 <div id="performance" class="section level3">
@@ -651,7 +661,7 @@ Benchmarks on Performance</a> vignette.</p>
 up-front in both packages:</p>
 <div class="comparison">
 <p><package>logging</package></p>
-<pre class="r"><code>getLogger()[[&#39;handlers&#39;]]$basic.stdout$formatter
+<pre class="r"><code>getLogger()[[&quot;handlers&quot;]]$basic.stdout$formatter
 #&gt; function (record) 
 #&gt; {
 #&gt;     msg &lt;- trimws(record$msg)
@@ -659,7 +669,7 @@ up-front in both packages:</p>
 #&gt;         msg, sep = &quot;:&quot;))
 #&gt;     return(text)
 #&gt; }
-#&gt; &lt;bytecode: 0x595477b73b38&gt;
+#&gt; &lt;bytecode: 0x59cb13ca0720&gt;
 #&gt; &lt;environment: namespace:logging&gt;</code></pre>
 </div>
 <div class="comparison">
@@ -683,23 +693,27 @@ basis in <code>logger</code>, which is by default using
 <code>glue</code>:</p>
 <div class="comparison">
 <p><package>logging</package></p>
-<pre class="r"><code>loginfo(&#39;hi&#39;)
-#&gt; 2024-03-05 15:10:46.423546 INFO::hi
-loginfo(&#39;hi %s&#39;, 84/2)
-#&gt; 2024-03-05 15:10:46.425129 INFO::hi 42
-loginfo(paste(&#39;hi&#39;, 84/2))
-#&gt; 2024-03-05 15:10:46.426593 INFO::hi 42
-loginfo(glue::glue(&#39;hi {84/2}&#39;))
-#&gt; 2024-03-05 15:10:46.428261 INFO::hi 42</code></pre>
+<pre class="r"><code>loginfo(&quot;hi&quot;)
+#&gt; 2024-10-21 00:07:19.47244 INFO::hi
+loginfo(&quot;hi %s&quot;, 84 / 2)
+#&gt; 2024-10-21 00:07:19.473808 INFO::hi 42
+loginfo(paste(&quot;hi&quot;, 84 / 2))
+#&gt; 2024-10-21 00:07:19.474968 INFO::hi 42
+loginfo(glue::glue(&quot;hi {84/2}&quot;))
+#&gt; 2024-10-21 00:07:19.476365 INFO::hi 42</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>log_info(&#39;hi&#39;)
-log_info(&#39;hi {84/2}&#39;)
+<pre class="r"><code>log_info(&quot;hi&quot;)
+#&gt; INFO [2024-10-21 00:07:19] hi
+log_info(&quot;hi {84/2}&quot;)
+#&gt; INFO [2024-10-21 00:07:19] hi {84/2}
 log_formatter(formatter_sprintf)
-log_info(&#39;hi %s&#39;, 84/2)
+log_info(&quot;hi %s&quot;, 84 / 2)
+#&gt; INFO [2024-10-21 00:07:19] hi 42
 log_formatter(formatter_paste)
-log_info(&#39;hi&#39;, 84/2)</code></pre>
+log_info(&quot;hi&quot;, 84 / 2)
+#&gt; INFO [2024-10-21 00:07:19] hi 42</code></pre>
 </div>
 <p>For even better compatibility, there’s also
 <code>?formatter_logging</code> that not only relies on
@@ -707,11 +721,18 @@ log_info(&#39;hi&#39;, 84/2)</code></pre>
 the call and the result as well when the log object is an R
 expression:</p>
 <pre class="r"><code>log_formatter(formatter_logging)
-log_info(&#39;42&#39;)
+log_info(&quot;42&quot;)
+#&gt; INFO [2024-10-21 00:07:19] 42
 log_info(42)
-log_info(4+2)
-log_info(&#39;foo %s&#39;, &#39;bar&#39;)
-log_info(12, 1+1, 2 * 2)</code></pre>
+#&gt; INFO [2024-10-21 00:07:19] 42: 42
+log_info(4 + 2)
+#&gt; INFO [2024-10-21 00:07:19] 4 + 2: 6
+log_info(&quot;foo %s&quot;, &quot;bar&quot;)
+#&gt; INFO [2024-10-21 00:07:19] foo bar
+log_info(12, 1 + 1, 2 * 2)
+#&gt; INFO [2024-10-21 00:07:19] 12: 12
+#&gt; INFO [2024-10-21 00:07:19] 1 + 1: 2
+#&gt; INFO [2024-10-21 00:07:19] 2 * 2: 4</code></pre>
 </div>
 <div id="log-record-destination-1" class="section level3">
 <h3>Log record destination</h3>
@@ -756,8 +777,10 @@ loginfo &lt;- log_info
 logwarn &lt;- log_warn
 logerror &lt;- log_error
 
-loginfo(&#39;Hello from logger in a logging theme ...&#39;)
-logwarn(&#39;... where the default log message formatter is %s&#39;, &#39;sprintf&#39;, namespace = &#39;foobar&#39;)</code></pre>
+loginfo(&quot;Hello from logger in a logging theme ...&quot;)
+#&gt; 2024-10-21 00:07:19 INFO::Hello from logger in a logging theme ...
+logwarn(&quot;... where the default log message formatter is %s&quot;, &quot;sprintf&quot;, namespace = &quot;foobar&quot;)
+#&gt; 2024-10-21 00:07:19 WARN:foobar:... where the default log message formatter is sprintf</code></pre>
 </div>
 </div>
 <div id="log4r" class="section level2">
@@ -808,15 +831,17 @@ referring to the log level, which takes a logging object and the log
 message:</p>
 <div class="comparison">
 <p><package>log4r</package></p>
-<pre class="r"><code>info(logger, &#39;hi there&#39;)
-#&gt; INFO  [2024-03-05 15:10:46] hi there
-warn(logger, &#39;watch out&#39;)
-#&gt; WARN  [2024-03-05 15:10:46] watch out</code></pre>
+<pre class="r"><code>info(logger, &quot;hi there&quot;)
+#&gt; INFO  [2024-10-21 00:07:19] hi there
+warn(logger, &quot;watch out&quot;)
+#&gt; WARN  [2024-10-21 00:07:19] watch out</code></pre>
 </div>
 <div class="comparison">
 <p><package>logger</package></p>
-<pre class="r"><code>log_info(&#39;hi there&#39;)
-log_warn(&#39;watch out&#39;)</code></pre>
+<pre class="r"><code>log_info(&quot;hi there&quot;)
+#&gt; 2024-10-21 00:07:19 INFO::hi there
+log_warn(&quot;watch out&quot;)
+#&gt; 2024-10-21 00:07:19 WARN::watch out</code></pre>
 </div>
 <p>As you can see the default layout of the messages is a bit different
 in the two packages.</p>
@@ -861,8 +886,6 @@ log environments, while <code>logger</code> handles that via
 <code>stop</code> function messages, but it’s on the <a href="https://github.com/daroczig/logger/issues/6">roadmap</a> to
 provide helper functions to be used as message hooks feed
 <code>logger</code>.</p>
-<pre><code>#&gt; Warning: &#39;logger&#39; namespace cannot be unloaded:
-#&gt;   namespace &#39;logger&#39; is imported by &#39;logger.tester&#39; so cannot be unloaded</code></pre>
 </div>
 
 

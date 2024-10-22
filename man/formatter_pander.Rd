@@ -17,11 +17,17 @@ formatter_pander(
 
 \item{...}{optional parameters passed to \code{pander}}
 
-\item{.logcall}{the logging call being evaluated (useful in formatters and layouts when you want to have access to the raw, unevaluated R expression)}
+\item{.logcall}{the logging call being evaluated (useful in
+formatters and layouts when you want to have access to the raw,
+unevaluated R expression)}
 
-\item{.topcall}{R expression from which the logging function was called (useful in formatters and layouts to extract the calling function's name or arguments)}
+\item{.topcall}{R expression from which the logging function was
+called (useful in formatters and layouts to extract the calling
+function's name or arguments)}
 
-\item{.topenv}{original frame of the \code{.topcall} calling function where the formatter function will be evaluated and that is used to look up the \code{namespace} as well via \code{logger:::top_env_name}}
+\item{.topenv}{original frame of the \code{.topcall} calling function
+where the formatter function will be evaluated and that is used
+to look up the \code{namespace} as well via \code{logger:::top_env_name}}
 }
 \value{
 character vector
@@ -33,16 +39,24 @@ Formats R objects with pander
 This functionality depends on the \pkg{pander} package.
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_formatter(formatter_pander)
-log_info('42')
+log_info("42")
 log_info(42)
-log_info(4+2)
+log_info(4 + 2)
 log_info(head(iris))
-log_info(head(iris), style = 'simple')
+log_info(head(iris), style = "simple")
 log_info(lm(hp ~ wt, mtcars))
-}
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-This is a \code{\link{log_formatter}}, for alternatives, see \code{\link{formatter_paste}}, \code{\link{formatter_sprintf}}, \code{\link{formatter_glue}}, \code{\link{formatter_glue_safe}}, \code{\link{formatter_glue_or_sprintf}}, \code{\link{formatter_logging}}
+Other log_formatters: 
+\code{\link{formatter_glue}()},
+\code{\link{formatter_glue_or_sprintf}()},
+\code{\link{formatter_glue_safe}()},
+\code{\link{formatter_json}()},
+\code{\link{formatter_logging}()},
+\code{\link{formatter_paste}()},
+\code{\link{formatter_sprintf}()}
 }
+\concept{log_formatters}

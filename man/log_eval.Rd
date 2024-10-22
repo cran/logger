@@ -7,17 +7,22 @@
 log_eval(expr, level = TRACE, multiline = FALSE)
 }
 \arguments{
-\item{expr}{R expression to be evaluated while logging the expression itself along with the result}
+\item{expr}{R expression to be evaluated while logging the
+expression itself along with the result}
 
-\item{level}{\code{\link{log_levels}}}
+\item{level}{\code{\link[=log_levels]{log_levels()}}}
 
-\item{multiline}{setting to \code{FALSE} will print both the expression (enforced to be on one line by removing line-breaks if any) and its result on a single line separated by \code{=>}, while setting to \code{TRUE} will log the expression and the result in separate sections reserving line-breaks and rendering the printed results}
+\item{multiline}{setting to \code{FALSE} will print both the expression
+(enforced to be on one line by removing line-breaks if any) and
+its result on a single line separated by \verb{=>}, while setting to
+\code{TRUE} will log the expression and the result in separate
+sections reserving line-breaks and rendering the printed results}
 }
 \description{
 Evaluate an expression and log results
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_eval(pi * 2, level = INFO)
 
 ## lowering the log level threshold so that we don't have to set a higher level in log_eval
@@ -45,6 +50,6 @@ log_eval(f <- log_eval)
 log_eval(f <- log_eval, multiline = TRUE)
 
 ## doing something computationally intensive
-log_eval(system.time(for(i in 1:100) mad(runif(1000))), multiline = TRUE)
-}
+log_eval(system.time(for (i in 1:100) mad(runif(1000))), multiline = TRUE)
+\dontshow{logger:::namespaces_set(old)}
 }

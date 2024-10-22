@@ -4,3 +4,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
+## ----cleanup, include = FALSE-------------------------------------------------
+logger:::namespaces_reset()
+

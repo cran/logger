@@ -9,7 +9,7 @@ appender_syslog(identifier, ...)
 \arguments{
 \item{identifier}{A string identifying the process.}
 
-\item{...}{Further arguments passed on to \code{\link[rsyslog]{open_syslog}}.}
+\item{...}{Further arguments passed on to \code{\link[rsyslog:syslog]{rsyslog::open_syslog()}}.}
 }
 \value{
 function taking \code{lines} argument
@@ -29,5 +29,15 @@ if (requireNamespace("rsyslog", quietly = TRUE)) {
 }
 }
 \seealso{
-This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_tee}}, \code{\link{appender_pushbullet}}, \code{\link{appender_telegram}}, \code{\link{appender_kinesis}} and \code{\link{appender_async}} for evaluate any \code{\link{log_appender}} function in a background process.
+Other log_appenders: 
+\code{\link{appender_async}()},
+\code{\link{appender_console}()},
+\code{\link{appender_file}()},
+\code{\link{appender_kinesis}()},
+\code{\link{appender_pushbullet}()},
+\code{\link{appender_slack}()},
+\code{\link{appender_stdout}()},
+\code{\link{appender_tee}()},
+\code{\link{appender_telegram}()}
 }
+\concept{log_appenders}

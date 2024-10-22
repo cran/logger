@@ -13,5 +13,15 @@ appender_stdout(lines)
 Append log record to stdout
 }
 \seealso{
-This is a \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_tee}}, \code{\link{appender_slack}}, \code{\link{appender_pushbullet}}
+Other log_appenders: 
+\code{\link{appender_async}()},
+\code{\link{appender_console}()},
+\code{\link{appender_file}()},
+\code{\link{appender_kinesis}()},
+\code{\link{appender_pushbullet}()},
+\code{\link{appender_slack}()},
+\code{\link{appender_syslog}()},
+\code{\link{appender_tee}()},
+\code{\link{appender_telegram}()}
 }
+\concept{log_appenders}

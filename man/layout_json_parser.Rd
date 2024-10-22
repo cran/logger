@@ -2,32 +2,43 @@
 % Please edit documentation in R/layouts.R
 \name{layout_json_parser}
 \alias{layout_json_parser}
-\title{Generate log layout function rendering JSON after merging meta fields with parsed list from JSON message}
+\title{Generate log layout function rendering JSON after merging meta
+fields with parsed list from JSON message}
 \usage{
-layout_json_parser(
-  fields = c("time", "level", "ns", "ans", "topenv", "fn", "node", "arch", "os_name",
-    "os_release", "os_version", "pid", "user")
-)
+layout_json_parser(fields = default_fields())
 }
 \arguments{
-\item{fields}{character vector of field names to be included in the JSON}
+\item{fields}{character vector of field names to be included in the
+JSON}
 }
 \description{
-Generate log layout function rendering JSON after merging meta fields with parsed list from JSON message
+Generate log layout function rendering JSON after merging meta
+fields with parsed list from JSON message
 }
 \note{
 This functionality depends on the \pkg{jsonlite} package.
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_formatter(formatter_json)
 log_info(everything = 42)
+
 log_layout(layout_json_parser())
 log_info(everything = 42)
-log_layout(layout_json_parser(fields = c('time', 'node')))
+
+log_layout(layout_json_parser(fields = c("time", "node")))
 log_info(cars = row.names(mtcars), species = unique(iris$Species))
-}
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-This is a \code{\link{log_layout}} potentially to be used with \code{\link{formatter_json}}, for alternatives, see \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json}} or generator functions such as \code{\link{layout_glue_generator}}
+Other log_layouts: 
+\code{\link{get_logger_meta_variables}()},
+\code{\link{layout_blank}()},
+\code{\link{layout_glue}()},
+\code{\link{layout_glue_colors}()},
+\code{\link{layout_glue_generator}()},
+\code{\link{layout_json}()},
+\code{\link{layout_logging}()},
+\code{\link{layout_simple}()}
 }
+\concept{log_layouts}

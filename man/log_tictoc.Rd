@@ -9,7 +9,7 @@ log_tictoc(..., level = INFO, namespace = NA_character_)
 \arguments{
 \item{...}{passed to \code{log_level}}
 
-\item{level}{see \code{\link{log_levels}}}
+\item{level}{see \code{\link[=log_levels]{log_levels()}}}
 
 \item{namespace}{x}
 }
@@ -17,15 +17,13 @@ log_tictoc(..., level = INFO, namespace = NA_character_)
 Tic-toc logging
 }
 \examples{
-\dontrun{
-log_tictoc('warming up')
+log_tictoc("warming up")
 Sys.sleep(0.1)
-log_tictoc('running')
+log_tictoc("running")
 Sys.sleep(0.1)
-log_tictoc('running')
+log_tictoc("running")
 Sys.sleep(runif(1))
-log_tictoc('and running')
-}
+log_tictoc("and running")
 }
 \author{
 Thanks to Neal Fultz for the idea and original implementation!

@@ -14,41 +14,62 @@ layout_glue_colors(
 )
 }
 \arguments{
-\item{level}{log level, see \code{\link{log_levels}} for more details}
+\item{level}{log level, see \code{\link[=log_levels]{log_levels()}} for more details}
 
 \item{msg}{string message}
 
-\item{namespace}{string referring to the \code{logger} environment / config to be used to override the target of the message record to be used instead of the default namespace, which is defined by the R package name from which the logger was called, and falls back to a common, global namespace.}
+\item{namespace}{string referring to the \code{logger} environment /
+config to be used to override the target of the message record to
+be used instead of the default namespace, which is defined by the
+R package name from which the logger was called, and falls back
+to a common, global namespace.}
 
-\item{.logcall}{the logging call being evaluated (useful in formatters and layouts when you want to have access to the raw, unevaluated R expression)}
+\item{.logcall}{the logging call being evaluated (useful in
+formatters and layouts when you want to have access to the raw,
+unevaluated R expression)}
 
-\item{.topcall}{R expression from which the logging function was called (useful in formatters and layouts to extract the calling function's name or arguments)}
+\item{.topcall}{R expression from which the logging function was
+called (useful in formatters and layouts to extract the calling
+function's name or arguments)}
 
-\item{.topenv}{original frame of the \code{.topcall} calling function where the formatter function will be evaluated and that is used to look up the \code{namespace} as well via \code{logger:::top_env_name}}
+\item{.topenv}{original frame of the \code{.topcall} calling function
+where the formatter function will be evaluated and that is used
+to look up the \code{namespace} as well via \code{logger:::top_env_name}}
 }
 \value{
 character vector
 }
 \description{
-Format a log message with \code{glue} and ANSI escape codes to add colors
+Colour log levels based on their severity. Log levels are coloured
+with \code{\link[=colorize_by_log_level]{colorize_by_log_level()}} and the messages are coloured with
+\code{\link[=grayscale_by_log_level]{grayscale_by_log_level()}}.
 }
 \note{
 This functionality depends on the \pkg{crayon} package.
 }
 \examples{
-\dontrun{
+\dontshow{if (requireNamespace("crayon")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 log_layout(layout_glue_colors)
 log_threshold(TRACE)
-log_info('Starting the script...')
-log_debug('This is the second line')
-log_trace('That is being placed right after the first one.')
-log_warn('Some errors might come!')
-log_error('This is a problem')
-log_debug('Getting an error is usually bad')
-log_error('This is another problem')
-log_fatal('The last problem.')
-}
+log_info("Starting the script...")
+log_debug("This is the second line")
+log_trace("That is being placed right after the first one.")
+log_warn("Some errors might come!")
+log_error("This is a problem")
+log_debug("Getting an error is usually bad")
+log_error("This is another problem")
+log_fatal("The last problem.")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_json}}, \code{\link{layout_json_parser}}, or generator functions such as \code{\link{layout_glue_generator}}
+Other log_layouts: 
+\code{\link{get_logger_meta_variables}()},
+\code{\link{layout_blank}()},
+\code{\link{layout_glue}()},
+\code{\link{layout_glue_generator}()},
+\code{\link{layout_json}()},
+\code{\link{layout_json_parser}()},
+\code{\link{layout_logging}()},
+\code{\link{layout_simple}()}
 }
+\concept{log_layouts}

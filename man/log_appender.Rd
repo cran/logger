@@ -7,7 +7,9 @@
 log_appender(appender = NULL, namespace = "global", index = 1)
 }
 \arguments{
-\item{appender}{function delivering a log record to the destination, eg \code{\link{appender_console}}, \code{\link{appender_file}} or \code{\link{appender_tee}}, default NULL}
+\item{appender}{function delivering a log record to the
+destination, eg \code{\link[=appender_console]{appender_console()}}, \code{\link[=appender_file]{appender_file()}} or
+\code{\link[=appender_tee]{appender_tee()}}, default NULL}
 
 \item{namespace}{logger namespace}
 
@@ -17,22 +19,27 @@ log_appender(appender = NULL, namespace = "global", index = 1)
 Get or set log record appender function
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 ## change appender to "tee" that writes to the console and a file as well
 t <- tempfile()
 log_appender(appender_tee(t))
 log_info(42)
-log_info(42:44)
+log_info(43)
+log_info(44)
 readLines(t)
 
 ## poor man's tee by stacking loggers in the namespace
 t <- tempfile()
-log_appender(appender_console)
+log_appender(appender_stdout)
 log_appender(appender_file(t), index = 2)
 log_info(42)
 readLines(t)
-}
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-\code{\link{logger}}, \code{\link{log_threshold}}, \code{\link{log_layout}} and \code{\link{log_formatter}}
+Other log configutation functions: 
+\code{\link{log_formatter}()},
+\code{\link{log_layout}()},
+\code{\link{log_threshold}()}
 }
+\concept{log configutation functions}

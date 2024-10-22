@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -445,17 +445,14 @@ as:</p>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>async <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">log_info</span>(<span class="st">&#39;Was this slow?&#39;</span>)</span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="fu">async</span>(), <span class="at">times =</span> <span class="fl">1e3</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Unit: microseconds</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;     expr     min      lq     mean   median     uq      max neval</span></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;  async() 511.329 528.247 614.8694 558.2535 616.14 5018.731  1000</span></span></code></pre></div>
-<p>Please note that although this ~0.6 ms is significantly higher than
-the ~0.15 ms we achieved above with the <code>sprintf</code> formatter,
-but this time we are calling an appender that would take 1 full second
-to deliver the log message (and not just printing to the console), so
-bringing that down to less than 1 millisecond is not too bad. If you
-need even higher throughput, then a custom <code>appender_async</code>
-without checking on the background process and potentially a faster
-message queue can bring this even below to 200 µs.</p>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co"># Unit: microseconds</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#     expr     min       lq     mean  median      uq     max neval</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#  async() 298.275 315.5565 329.6235 322.219 333.371 894.579  1000</span></span></code></pre></div>
+<p>Please note that although this ~0.3 ms is higher than the ~0.15 ms we
+achieved above with the <code>sprintf</code> formatter, but this time we
+are calling an appender that would take 1 full second to deliver the log
+message (and not just printing to the console), so bringing that down to
+less than 1 millisecond is not too bad.</p>
 
 
 

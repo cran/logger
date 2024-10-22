@@ -10,7 +10,8 @@ appender_kinesis(stream)
 \item{stream}{name of the Kinesis stream}
 }
 \value{
-function taking \code{lines} and optional \code{partition_key} argument
+function taking \code{lines} and optional \code{partition_key}
+argument
 }
 \description{
 Send log messages to a Amazon Kinesis stream
@@ -19,5 +20,15 @@ Send log messages to a Amazon Kinesis stream
 This functionality depends on the \pkg{botor} package.
 }
 \seealso{
-This is generator function for \code{\link{log_appender}}, for alternatives, see eg \code{\link{appender_console}}, \code{\link{appender_file}}, \code{\link{appender_tee}}, \code{\link{appender_pushbullet}}, \code{\link{appender_telegram}}, \code{\link{appender_syslog}} and \code{\link{appender_async}} for evaluate any \code{\link{log_appender}} function in a background process.
+Other log_appenders: 
+\code{\link{appender_async}()},
+\code{\link{appender_console}()},
+\code{\link{appender_file}()},
+\code{\link{appender_pushbullet}()},
+\code{\link{appender_slack}()},
+\code{\link{appender_stdout}()},
+\code{\link{appender_syslog}()},
+\code{\link{appender_tee}()},
+\code{\link{appender_telegram}()}
 }
+\concept{log_appenders}

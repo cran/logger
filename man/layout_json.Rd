@@ -4,13 +4,11 @@
 \alias{layout_json}
 \title{Generate log layout function rendering JSON}
 \usage{
-layout_json(
-  fields = c("time", "level", "ns", "ans", "topenv", "fn", "node", "arch", "os_name",
-    "os_release", "os_version", "pid", "user", "msg")
-)
+layout_json(fields = default_fields())
 }
 \arguments{
-\item{fields}{character vector of field names to be included in the JSON}
+\item{fields}{character vector of field names to be included in the
+JSON}
 }
 \value{
 character vector
@@ -22,12 +20,21 @@ Generate log layout function rendering JSON
 This functionality depends on the \pkg{jsonlite} package.
 }
 \examples{
-\dontrun{
+\dontshow{old <- logger:::namespaces_set()}
 log_layout(layout_json())
 log_info(42)
-log_info('ok {1:3} + {1:3} = {2*(1:3)}')
-}
+log_info("ok {1:3} + {1:3} = {2*(1:3)}")
+\dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
-This is a \code{\link{log_layout}}, for alternatives, see \code{\link{layout_blank}}, \code{\link{layout_simple}}, \code{\link{layout_glue}}, \code{\link{layout_glue_colors}}, \code{\link{layout_json_parser}},  or generator functions such as \code{\link{layout_glue_generator}}
+Other log_layouts: 
+\code{\link{get_logger_meta_variables}()},
+\code{\link{layout_blank}()},
+\code{\link{layout_glue}()},
+\code{\link{layout_glue_colors}()},
+\code{\link{layout_glue_generator}()},
+\code{\link{layout_json_parser}()},
+\code{\link{layout_logging}()},
+\code{\link{layout_simple}()}
 }
+\concept{log_layouts}
