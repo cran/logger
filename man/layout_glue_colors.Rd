@@ -2,7 +2,7 @@
 % Please edit documentation in R/layouts.R
 \name{layout_glue_colors}
 \alias{layout_glue_colors}
-\title{Format a log message with \code{glue} and ANSI escape codes to add colors}
+\title{Format a log message with \code{\link[glue:glue]{glue::glue()}} and ANSI escape codes to add colors}
 \usage{
 layout_glue_colors(
   level,
@@ -10,7 +10,8 @@ layout_glue_colors(
   namespace = NA_character_,
   .logcall = sys.call(),
   .topcall = sys.call(-1),
-  .topenv = parent.frame()
+  .topenv = parent.frame(),
+  .timestamp = Sys.time()
 )
 }
 \arguments{
@@ -35,6 +36,9 @@ function's name or arguments)}
 \item{.topenv}{original frame of the \code{.topcall} calling function
 where the formatter function will be evaluated and that is used
 to look up the \code{namespace} as well via \code{logger:::top_env_name}}
+
+\item{.timestamp}{The time the logging occured. Defaults to the current time
+but may be overwritten if the logging is delayed from the time it happend}
 }
 \value{
 character vector
@@ -65,6 +69,7 @@ log_fatal("The last problem.")
 Other log_layouts: 
 \code{\link{get_logger_meta_variables}()},
 \code{\link{layout_blank}()},
+\code{\link{layout_gha}()},
 \code{\link{layout_glue}()},
 \code{\link{layout_glue_generator}()},
 \code{\link{layout_json}()},

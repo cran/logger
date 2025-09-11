@@ -9,7 +9,8 @@ get_logger_meta_variables(
   namespace = NA_character_,
   .logcall = sys.call(),
   .topcall = sys.call(-1),
-  .topenv = parent.frame()
+  .topenv = parent.frame(),
+  .timestamp = Sys.time()
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ function's name or arguments)}
 \item{.topenv}{original frame of the \code{.topcall} calling function
 where the formatter function will be evaluated and that is used
 to look up the \code{namespace} as well via \code{logger:::top_env_name}}
+
+\item{.timestamp}{The time the logging occured. Defaults to the current time
+but may be overwritten if the logging is delayed from the time it happend}
 }
 \value{
 list
@@ -61,6 +65,8 @@ otherwise a fallback namespace (eg usually \code{global})
 \item \code{topenv}: the name of the top environment from which the parent call was called
 (eg R package name or \code{GlobalEnv})
 \item \code{call}: parent call (if any) calling the logging function
+\item \code{location}: A list with element \code{path} and \code{line} giving the location of the
+log call
 \item \code{fn}: function's (if any) name calling the logging function
 }
 }
@@ -69,6 +75,7 @@ otherwise a fallback namespace (eg usually \code{global})
 
 Other log_layouts: 
 \code{\link{layout_blank}()},
+\code{\link{layout_gha}()},
 \code{\link{layout_glue}()},
 \code{\link{layout_glue_colors}()},
 \code{\link{layout_glue_generator}()},

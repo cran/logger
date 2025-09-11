@@ -1,4 +1,19 @@
-# logger (development version)
+# logger 0.4.1 (2025-09-10)
+
+New features and quality of life improvements:
+
+* Support renaming meta fields (#217, @atusy)
+* Added `log_elapsed()` to show cumulative elapsed running time (#221, @thomasp85)
+* `log_errors()` gains a `traceback` argument that toggles whether the error traceback should be logged along with the message (fix #86 via #223, @thomasp85)
+* File and line location of the log call is now available to the layouts (fix #110 via #224, @thomasp85)
+* New `formatter_cli()` allows you to use the syntax from the cli package to create log messages (fix #210 via #225, @thomasp85)
+* New `log_chunk_time()` helper function to automatically log the execution time of knitr code chunks (fix #222 via #227, @thomasp85)
+* Allow user to overwrite the timestamp during logging if needed (fix #230, @thomasp85)
+
+# logger 0.4.0 (2024-10-19)
+
+A lot of internal code quality improvements and standardization,
+improved documentations, modernized tests, performance speedups.
 
 ## New features
 
@@ -7,6 +22,7 @@
 * `log_appender()`, `log_layout()` and `log_formatter()` now check that you are calling them with a function, and return the previously set value (#170, @hadley)
 * new function to return number of log indices (#194, @WurmPeter)
 * `appender_async` is now using `mirai` instead of a custom background process and queue system (#214, @hadley @shikokuchuo)
+* `layout_gha()` for providing native GitHub Action logging. This automatically gets used when running code in github actions (@thomasp85)
 
 ## Fixes
 

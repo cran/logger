@@ -4,15 +4,20 @@
 \alias{log_errors}
 \title{Injects a logger call to standard errors}
 \usage{
-log_errors(muffle = getOption("logger_muffle_errors", FALSE))
+log_errors(
+  muffle = getOption("logger_muffle_errors", FALSE),
+  traceback = FALSE
+)
 }
 \arguments{
 \item{muffle}{if TRUE, the error is not thrown after being logged}
+
+\item{traceback}{if TRUE the error traceback is logged along with the error
+message}
 }
 \description{
-This function uses \code{trace} to add a \code{log_error} function call when
-\code{stop} is called to log the error messages with the \code{logger} layout
-and appender.
+This function sets a hook to trigger \code{\link[=log_error]{log_error()}} when \code{\link[=stop]{stop()}} is called
+to log the error messages with the global \code{logger} layout and appender.
 }
 \examples{
 \dontrun{

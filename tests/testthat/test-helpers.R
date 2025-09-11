@@ -17,6 +17,32 @@ test_that("tictoc", {
   expect_output(log_tictoc(), "timer toc 1 mins")
 })
 
+test_that("elapsed", {
+  local_test_logger()
+
+  proc_null <- proc.time() * 0
+
+  with_mocked_bindings(
+    expect_output(log_elapsed(), "timer 2 secs elapsed"),
+    proc.time = function() proc_null + 2
+  )
+
+  with_mocked_bindings(
+    expect_output(log_elapsed_start(), "starting global timer"),
+    proc.time = function() proc_null + 1
+  )
+
+  with_mocked_bindings(
+    expect_output(log_elapsed(), "timer 1 secs elapsed"),
+    proc.time = function() proc_null + 2
+  )
+
+  with_mocked_bindings(
+    expect_silent(log_elapsed_start(quiet = TRUE)),
+    proc.time = function() proc_null
+  )
+})
+
 test_that("log with separator", {
   local_test_logger()
   expect_output(log_with_separator(42), "===")
@@ -69,4 +95,18 @@ test_that("invisible return", {
 test_that("lower log level", {
   local_test_logger(TRACE, layout = layout_glue_generator("{level} {msg}"))
   expect_output(log_eval(4), sprintf("TRACE %s => %s", shQuote(4), shQuote(4)))
+})
+
+test_that("knitr hook gets applied", {
+  local_test_logger()
+  mock_doc <- c(
+    "```{r, include = FALSE}",
+    "library(logger)",
+    "log_chunk_time()",
+    "```",
+    "```{r}",
+    "Sys.sleep(0.2)",
+    "```"
+  )
+  expect_output(knitr::knit(text = mock_doc, quiet = TRUE), "global timer 0.2")
 })

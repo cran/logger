@@ -3,9 +3,8 @@ logger_meta_env <- function(log_level = NULL,
                             .logcall = sys.call(),
                             .topcall = sys.call(-1),
                             .topenv = parent.frame(),
+                            .timestamp = Sys.time(),
                             parent = emptyenv()) {
-  timestamp <- Sys.time()
-
   env <- new.env(parent = parent)
   env$ns <- namespace
   env$ans <- fallback_namespace(namespace)
@@ -15,8 +14,9 @@ logger_meta_env <- function(log_level = NULL,
   delayedAssign("fn", deparse_to_one_line(.topcall[[1]]), assign.env = env)
   delayedAssign("call", deparse_to_one_line(.topcall), assign.env = env)
   delayedAssign("topenv", top_env_name(.topenv), assign.env = env)
+  delayedAssign("location", log_call_location(.logcall), assign.env = env)
 
-  env$time <- timestamp
+  env$time <- .timestamp
   env$levelr <- log_level
   env$level <- attr(log_level, "level")
 

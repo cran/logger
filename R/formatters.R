@@ -12,9 +12,9 @@ formatter_paste <- function(...,
 }
 attr(formatter_paste, "generator") <- quote(formatter_paste())
 
-#' Apply `sprintf` to convert R objects into a character vector
-#' @param fmt passed to `sprintf`
-#' @param ... passed to `sprintf`
+#' Apply [sprintf()] to convert R objects into a character vector
+#' @param fmt passed to [sprintf()]
+#' @param ... passed to [sprintf()]
 #' @inheritParams log_level
 #' @return character vector
 #' @export
@@ -28,8 +28,8 @@ formatter_sprintf <- function(fmt,
 }
 attr(formatter_sprintf, "generator") <- quote(formatter_sprintf())
 
-#' Apply `glue` to convert R objects into a character vector
-#' @param ... passed to `glue` for the text interpolation
+#' Apply [glue::glue()] to convert R objects into a character vector
+#' @param ... passed to [glue::glue()] for the text interpolation
 #' @inheritParams log_level
 #' @return character vector
 #' @export
@@ -63,8 +63,8 @@ formatter_glue <- function(...,
 attr(formatter_glue, "generator") <- quote(formatter_glue())
 
 
-#' Apply `glue_safe` to convert R objects into a character vector
-#' @param ... passed to `glue_safe` for the text interpolation
+#' Apply [glue::glue_safe()] to convert R objects into a character vector
+#' @param ... passed to [glue::glue_safe()] for the text interpolation
 #' @inheritParams log_level
 #' @return character vector
 #' @export
@@ -94,18 +94,18 @@ formatter_glue_safe <- function(...,
 attr(formatter_glue_safe, "generator") <- quote(formatter_glue_safe())
 
 
-#' Apply `glue` and `sprintf`
+#' Apply [glue::glue()] and [sprintf()]
 #'
 #' The best of both words: using both formatter functions in your log
 #' messages, which can be useful eg if you are migrating from
-#' `sprintf` formatted log messages to `glue` or similar.
+#' [sprintf()] formatted log messages to [glue::glue()] or similar.
 #'
 #' Note that this function tries to be smart when passing arguments to
-#' `glue` and `sprintf`, but might fail with some edge cases, and
+#' [glue::glue()] and [sprintf()], but might fail with some edge cases, and
 #' returns an unformatted string.
-#' @param msg passed to `sprintf` as `fmt` or handled as part of `...`
-#'     in `glue`
-#' @param ... passed to `glue` for the text interpolation
+#' @param msg passed to [sprintf()] as `fmt` or handled as part of `...`
+#'     in [glue::glue()]
+#' @param ... passed to [glue::glue()] for the text interpolation
 #' @inheritParams log_level
 #' @return character vector
 #' @family log_formatters
@@ -173,6 +173,36 @@ formatter_glue_or_sprintf <- function(msg,
 }
 attr(formatter_glue_or_sprintf, "generator") <- quote(formatter_glue_or_sprintf())
 
+#' Apply [cli::cli_text()] to format string with cli syntax
+#' @param ... passed to [cli::cli_text()] for the text interpolation
+#' @inheritParams log_level
+#' @return character vector
+#' @export
+#' @family log_formatters
+#' @importFrom utils str
+formatter_cli <- function(...,
+                          .logcall = sys.call(),
+                          .topcall = sys.call(-1),
+                          .topenv = parent.frame()) {
+  fail_on_missing_package("cli")
+
+  withCallingHandlers(
+    cli::cli_fmt(cli::cli_text(..., .envir = .topenv)),
+    error = function(e) {
+      args <- paste0(capture.output(str(...)), collapse = "\n")
+
+      stop(paste0(
+        "`cli` failed in `formatter_cli` on:\n\n",
+        args,
+        "\n\nRaw error message:\n\n",
+        conditionMessage(e),
+        "\n\nPlease consider using another `log_formatter` or ",
+        "`skip_formatter` on strings with curly braces."
+      ))
+    }
+  )
+}
+attr(formatter_cli, "generator") <- quote(formatter_cli())
 
 #' Transforms all passed R objects into a JSON list
 #' @param ... passed to `toJSON` wrapped into a `list`
@@ -229,7 +259,7 @@ skip_formatter <- function(message, ...) {
 #' is a string, then [sprintf()] is being called -- otherwise it does
 #' something like [log_eval()] and logs the R expression(s) and the
 #' result(s) as well.
-#' @param ... string and further params passed to `sprintf` or R
+#' @param ... string and further params passed to [sprintf()] or R
 #'     expressions to be evaluated
 #' @inheritParams log_level
 #' @return character vector

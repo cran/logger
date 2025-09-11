@@ -9,7 +9,7 @@ layout_glue_generator(
 )
 }
 \arguments{
-\item{format}{\code{glue}-flavored layout of the message using the above
+\item{format}{\code{\link[glue:glue]{glue::glue()}}-flavored layout of the message using the above
 variables}
 }
 \value{
@@ -19,7 +19,7 @@ that is returned when calling \code{\link[=log_layout]{log_layout()}} for the cu
 used layout
 }
 \description{
-\code{format} is passed to \code{glue} with access to the below variables:
+\code{format} is passed to \code{\link[glue:glue]{glue::glue()}} with access to the below variables:
 \itemize{ \item msg: the actual log message \item further variables
 set by \code{\link[=get_logger_meta_variables]{get_logger_meta_variables()}} }
 }
@@ -40,6 +40,7 @@ See example calls from \code{\link[=layout_glue]{layout_glue()}} and \code{\link
 Other log_layouts: 
 \code{\link{get_logger_meta_variables}()},
 \code{\link{layout_blank}()},
+\code{\link{layout_gha}()},
 \code{\link{layout_glue}()},
 \code{\link{layout_glue_colors}()},
 \code{\link{layout_json}()},

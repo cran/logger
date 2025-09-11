@@ -102,7 +102,8 @@ log_separator <- function(level = INFO,
                           width = 80,
                           .logcall = sys.call(),
                           .topcall = sys.call(-1),
-                          .topenv = parent.frame()) {
+                          .topenv = parent.frame(),
+                          .timestamp = Sys.time()) {
   stopifnot(length(separator) == 1, nchar(separator) == 1)
 
   base_info_chars <- nchar(catch_base_log(level, namespace, .topcall = .topcall, .topenv = .topenv))
@@ -113,7 +114,8 @@ log_separator <- function(level = INFO,
     namespace = namespace,
     .logcall = .logcall,
     .topcall = .topcall,
-    .topenv = .topenv
+    .topenv = .topenv,
+    .timestamp = .timestamp
   )
 }
 
@@ -188,7 +190,7 @@ log_with_separator <- function(...,
 
 
 #' Tic-toc logging
-#' @param ... passed to `log_level`
+#' @param ... passed to [log_level()]
 #' @param level see [log_levels()]
 #' @param namespace x
 #' @export
@@ -227,6 +229,64 @@ log_tictoc <- function(..., level = INFO, namespace = NA_character_) {
 }
 tictocs <- new.env(parent = emptyenv())
 
+#' Log cumulative running time
+#'
+#' This function is working like [log_tictoc()] but differs in that it continues
+#' to count up rather than resetting the timer at every call. You can set the
+#' start time using `log_elapsed_start()`, but if that hasn't been called it
+#' will show the time since the R session started.
+#'
+#' @inheritParams log_tictoc
+#'
+#' @export
+#'
+#' @examples
+#' log_elapsed_start()
+#' Sys.sleep(0.4)
+#' log_elapsed("Tast 1")
+#' Sys.sleep(0.2)
+#' log_elapsed("Task 2")
+#'
+log_elapsed <- function(..., level = INFO, namespace = NA_character_) {
+  ns <- fallback_namespace(namespace)
+
+  start <- get0(ns, envir = elapsed, ifnotfound = 0)
+
+  time_elapsed <- as.difftime(proc.time()["elapsed"] - start, units = "secs")
+
+  log_level(
+    paste(
+      ns, "timer",
+      round(time_elapsed, 2), attr(time_elapsed, "units"), "elapsed -- "
+    ),
+    ...,
+    level = level, namespace = namespace,
+    .logcall = sys.call(),
+    .topcall = sys.call(-1),
+    .topenv = parent.frame()
+  )
+}
+#' @rdname log_elapsed
+#' @param quiet Should starting the time emit a log message
+#' @export
+log_elapsed_start <- function(level = INFO, namespace = NA_character_, quiet = FALSE) {
+  ns <- fallback_namespace(namespace)
+
+  assign(ns, proc.time()["elapsed"], envir = elapsed)
+
+  if (!quiet) {
+    log_level(
+      paste(
+        "starting", ns, "timer"
+      ),
+      level = level, namespace = namespace,
+      .logcall = sys.call(),
+      .topcall = sys.call(-1),
+      .topenv = parent.frame()
+    )
+  }
+}
+elapsed <- new.env(parent = emptyenv())
 
 #' Logs the error message to console before failing
 #' @param expression call
@@ -241,4 +301,41 @@ log_failure <- function(expression) {
       log_error(conditionMessage(e))
     }
   )
+}
+
+#' Automatically log execution time of knitr chunks
+#'
+#' Calling this function in the first chunk of a document will instruct knitr
+#' to automatically log the execution time of each chunk. If using
+#' [formatter_glue()] or [formatter_cli()] then the `options` variable will be
+#' available, providing the chunk options such as chunk label etc.
+#'
+#' @inheritParams log_elapsed
+#'
+#' @export
+#'
+#' @examples
+#' # To be put in the first chunk of a document
+#' log_chunk_time("chunk {options$label}")
+#'
+log_chunk_time <- function(..., level = INFO, namespace = NA_character_) {
+  if (!requireNamespace("knitr", quietly = TRUE)) {
+    stop("knitr is required to use this functionality", call. = FALSE)
+  }
+  if (!isTRUE(getOption("knitr.in.progress"))) {
+    return(invisible())
+  }
+  args <- list(...)
+  args$level <- level
+  args$namespace <- namespace
+  knitr::knit_hooks$set(logger_timer = function(before, options) {
+    if (before) {
+      log_elapsed_start(namespace = namespace, quiet = TRUE)
+    } else {
+      do.call(log_elapsed, args)
+    }
+  })
+  knitr::opts_chunk$set(logger_timer = TRUE)
+
+  invisible()
 }

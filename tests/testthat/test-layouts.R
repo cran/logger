@@ -20,6 +20,10 @@ test_that("metavars", {
 
   f_warn <- function() log_warn()
   expect_output(f_warn(), "WARN global f_warn()")
+
+  local_test_logger(layout = layout_glue_generator("{time}"))
+  time <- as.POSIXct("2025-04-04 10:31:57 CEST")
+  expect_output(log_info("test", .timestamp = time), "2025-04-04 10:31:57")
 })
 
 test_that("JSON layout", {
@@ -39,6 +43,11 @@ test_that("JSON layout warns if you include msg", {
 test_that("JSON parser layout", {
   local_test_logger(layout = layout_json_parser(fields = character()))
   expect_output(log_info(skip_formatter('{"x": 4}')), '{"x":4}', fixed = TRUE)
+})
+
+test_that("JSON parser layout can be renamed", {
+  local_test_logger(layout = layout_json_parser(c(LEVEL = "level")))
+  expect_output(log_info(skip_formatter('{"x": 4}')), '{"LEVEL":"INFO","x":4}', fixed = TRUE)
 })
 
 test_that("must throw errors", {

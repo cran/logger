@@ -12,7 +12,7 @@ formatter_logging(
 )
 }
 \arguments{
-\item{...}{string and further params passed to \code{sprintf} or R
+\item{...}{string and further params passed to \code{\link[=sprintf]{sprintf()}} or R
 expressions to be evaluated}
 
 \item{.logcall}{the logging call being evaluated (useful in
@@ -50,6 +50,7 @@ log_info(12, 1 + 1, 2 * 2)
 }
 \seealso{
 Other log_formatters: 
+\code{\link{formatter_cli}()},
 \code{\link{formatter_glue}()},
 \code{\link{formatter_glue_or_sprintf}()},
 \code{\link{formatter_glue_safe}()},

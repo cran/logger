@@ -9,7 +9,7 @@ layout_json_parser(fields = default_fields())
 }
 \arguments{
 \item{fields}{character vector of field names to be included in the
-JSON}
+JSON. If named, the names will be used as field names in the JSON.}
 }
 \description{
 Generate log layout function rendering JSON after merging meta
@@ -28,12 +28,21 @@ log_info(everything = 42)
 
 log_layout(layout_json_parser(fields = c("time", "node")))
 log_info(cars = row.names(mtcars), species = unique(iris$Species))
+
+log_layout(layout_json_parser(fields = c(timestamp = "time", "node")))
+log_info(
+  message = paste(
+    "Compared to the previous example,
+    the 'time' field is renamed to 'timestamp'"
+  )
+)
 \dontshow{logger:::namespaces_set(old)}
 }
 \seealso{
 Other log_layouts: 
 \code{\link{get_logger_meta_variables}()},
 \code{\link{layout_blank}()},
+\code{\link{layout_gha}()},
 \code{\link{layout_glue}()},
 \code{\link{layout_glue_colors}()},
 \code{\link{layout_glue_generator}()},
