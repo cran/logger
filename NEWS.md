@@ -1,4 +1,12 @@
-# logger 0.4.1 (2025-09-10)
+# logger 0.4.2 (2026-05-08)
+
+Maintenance release:
+
+* Added `appender_ntfy()` to use {ntfy} as an appender (#240, @jonocarroll)
+* `normalizePath()` in the `log_call_location()` no longer triggers warning if the package source does not exist (#241, @maksymiuks)
+* Fix failing unit test on CRAN
+
+# logger 0.4.1 (2025-09-08)
 
 New features and quality of life improvements:
 
